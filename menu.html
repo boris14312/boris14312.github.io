@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head> 
+		<link rel="shortcut icon" href="LOOGOO.png">
+		<style>
+			body {
+				-webkit-user-select: none; /* Safari */
+				-moz-user-select: none; /* Firefox */
+				-ms-user-select: none; /* IE10+/Edge */
+				user-select: none; /* Standard syntax */
+			}
+		</style>
+		<meta charset="utf-8"> 
+		<title>菜单</title> 
+		<div style="position: fixed; bottom: 20px; right: 20px;">
+			<a href="http://wpa.qq.com/msgrd?v=3&uin=1431258163&site=qq&menu=yes"><img src="imgs/QQ.png" oncontextmenu="return false" alt="加QQ" style="width: 50px;"></a>
+		</div>
+		<style> 
+			body { font-family: Arial, Helvetica, sans-serif; background-color: #F4F4F4; text-align: center; }
+			h2 {
+			font-size: 36px;
+			margin-top: 80px;
+			color: #333333;
+			}
+
+			object {
+			width: 100%;
+			max-width: 1280px;
+			height: auto;
+			display: block;
+			margin: 5% auto;
+			border: none;
+			background-color: white;
+			box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+			border-radius: 10px; /* 设置元素的圆角半径为10px */
+			}
+		</style> 
+	</head> 
+	<body> 
+		<script>
+			document.addEventListener("contextmenu", function(e) {
+				e.preventDefault();
+			}, false);
+		</script>
+		<script>
+			var setCopy = function(){return false;}
+			var setPaste = function(){return false;}
+			document.oncopy = setCopy;
+			document.onpaste = setPaste;
+		</script>
+		<h2>兑换码菜单</h2> 
+		<object data="games.txt"></object> 
+	</body> 
+</html>
