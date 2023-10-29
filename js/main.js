@@ -396,21 +396,17 @@ color: rgb(244,167,89);
 let styleContent = `
 color: rgb(30,152,255);
 `
-let title1 = '無名の主页'
+let title1 = 'Borisの主页'
 let title2 = `
- _____ __  __  _______     ____     __
-|_   _|  \\/  |/ ____\\ \\   / /\\ \\   / /
-  | | | \\  / | (___  \\ \\_/ /  \\ \\_/ / 
-  | | | |\\/| |\\___ \\  \\   /    \\   /  
- _| |_| |  | |____) |  | |      | |   
-|_____|_|  |_|_____/   |_|      |_|                                                     
-`
-let content = `
-版 本 号：3.4
-更新日期：2022-07-24
-
-主页:  https://www.imsyy.top
-Github:  https://github.com/imsyy/home
+ＢＢＢＢ　　　　ＯＯＯ　　　ＲＲＲＲ　　　ＩＩＩＩＩ　　　ＳＳＳ
+Ｂ　　　Ｂ　　Ｏ　　　Ｏ　　Ｒ　　　Ｒ　　　　Ｉ　　　　Ｓ　　　Ｓ
+Ｂ　　　Ｂ　　Ｏ　　　Ｏ　　Ｒ　　　Ｒ　　　　Ｉ　　　　Ｓ　　　Ｓ
+Ｂ　　　Ｂ　　Ｏ　　　Ｏ　　Ｒ　　　Ｒ　　　　Ｉ　　　　　Ｓ
+ＢＢＢＢ　　　Ｏ　　　Ｏ　　ＲＲＲＲ　　　　　Ｉ　　　　　　Ｓ
+Ｂ　　　Ｂ　　Ｏ　　　Ｏ　　Ｒ　　Ｒ　　　　　Ｉ　　　　　　　Ｓ
+Ｂ　　　Ｂ　　Ｏ　　　Ｏ　　Ｒ　　　Ｒ　　　　Ｉ　　　　Ｓ　　　Ｓ
+Ｂ　　　Ｂ　　Ｏ　　　Ｏ　　Ｒ　　　Ｒ　　　　Ｉ　　　　Ｓ　　　Ｓ
+ＢＢＢＢ　　　　ＯＯＯ　　　Ｒ　　　Ｒ　　ＩＩＩＩＩ　　　ＳＳＳ                                              
 `
 console.log(`%c${title1} %c${title2}
 %c${content}`, styleTitle1, styleTitle2, styleContent)
