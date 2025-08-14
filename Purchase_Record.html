@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商品信息卡片打印系统</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+}
+
+.main-content {
+    padding: 40px;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #667eea;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: #764ba2;
+    border-radius: 2px;
+}
+
+.form-group {
+    position: relative;
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+.form-group:nth-child(4) { animation-delay: 0.4s; }
+.form-group:nth-child(5) { animation-delay: 0.5s; }
+.form-group:nth-child(6) { animation-delay: 0.6s; }
+.form-group:nth-child(7) { animation-delay: 0.7s; }
+.form-group:nth-child(8) { animation-delay: 0.8s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+label i {
+    color: #667eea;
+    width: 16px;
+}
+
+input, select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+input:focus, select:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1), 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+input:hover, select:hover {
+    border-color: #cbd5e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 12px 16px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: 2px solid #e2e8f0;
+    background: white;
+    min-width: 100px;
+    justify-content: center;
+}
+
+.radio-option:hover {
+    background: #f7fafc;
+    border-color: #cbd5e0;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.radio-option input[type="radio"] {
+    width: auto;
+    margin: 0;
+    accent-color: #667eea;
+}
+
+.radio-option label {
+    margin: 0;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.radio-option input[type="radio"]:checked + label {
+    color: #667eea;
+    font-weight: 600;
+}
+
+.radio-option:has(input[type="radio"]:checked) {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-color: #667eea;
+}
+
+.radio-option:has(input[type="radio"]:checked) label {
+    color: white;
+}
+
+.custom-input-container {
+    margin-top: 10px;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.custom-input-container.show {
+    opacity: 1;
+    max-height: 100px;
+}
+
+/* 收据显示模式选择 */
+.receipt-mode-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.receipt-mode-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 10px 14px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    border: 2px solid #e2e8f0;
+    background: white;
+    flex: 1;
+    min-width: 120px;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.receipt-mode-option:hover {
+    background: #f7fafc;
+    border-color: #cbd5e0;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.receipt-mode-option input[type="radio"] {
+    width: auto;
+    margin: 0;
+    accent-color: #667eea;
+}
+
+.receipt-mode-option label {
+    margin: 0;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.receipt-mode-option:has(input[type="radio"]:checked) {
+    background: linear-gradient(135deg, #48bb78, #38a169);
+    color: white;
+    border-color: #48bb78;
+}
+
+.receipt-mode-option:has(input[type="radio"]:checked) label {
+    color: white;
+}
+
+.controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* 预览窗口样式 */
+#previewWindow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#previewContent {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 900px;
+    width: 95%;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.closeBtn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #e53e3e;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    background: #fed7d7;
+}
+
+.closeBtn:hover {
+    background: #e53e3e;
+    color: white;
+    transform: rotate(90deg);
+}
+
+.preview-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    aspect-ratio: 4/3;
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.preview-card h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #2d3748;
+    text-align: center;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #667eea;
+}
+
+.preview-card-type {
+    text-align: center;
+    color: #667eea;
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.preview-card-details {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    align-items: start;
+}
+
+.preview-card .detail-item {
+    padding: 10px;
+    background: #f7fafc;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.preview-card .detail-item strong {
+    color: #4a5568;
+    min-width: 50px;
+    font-size: 0.85rem;
+}
+
+.preview-card .detail-item span {
+    color: #2d3748;
+    font-weight: 500;
+}
+
+/* 收据显示区域 - 根据模式调整 */
+.preview-card .receipt-section {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.preview-card .receipt-section.thumbnail-mode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: left;
+    margin-top: 0;
+    grid-column: 1 / -1;
+    background: #f0f8ff;
+    padding: 8px;
+    border-radius: 8px;
+    border-left: 4px solid #4299e1;
+}
+
+.preview-card .receipt-section.icon-mode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: left;
+    margin-top: 0;
+    grid-column: span 1;
+    background: #f7fafc;
+    padding: 10px;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.preview-card .receipt-section.separate-mode {
+    grid-column: 1 / -1;
+    margin-top: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 2px dashed #cbd5e0;
+}
+
+.preview-card img {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+/* 不同模式下的图片样式 */
+.preview-card img.full-mode {
+    max-width: 100%;
+    max-height: 120px;
+    object-fit: contain;
+    margin-top: 8px;
+}
+
+.preview-card img.thumbnail-mode {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin: 0;
+}
+
+.preview-card img.separate-mode {
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    margin-top: 10px;
+}
+
+.receipt-icon {
+    font-size: 1.2rem;
+    color: #667eea;
+}
+
+.receipt-text {
+    font-size: 0.85rem;
+    color: #4a5568;
+}
+
+.preview-controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 20px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .radio-group, .receipt-mode-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .radio-option, .receipt-mode-option {
+        min-width: unset;
+    }
+    
+    .controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+    
+    #previewContent {
+        margin: 20px;
+        width: calc(100% - 40px);
+    }
+    
+    .preview-card-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 文件上传样式 */
+.file-upload-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.file-upload-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    border: 2px dashed #cbd5e0;
+    border-radius: 12px;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #718096;
+    font-weight: 500;
+}
+
+.file-upload-label:hover {
+    border-color: #667eea;
+    background: #edf2f7;
+    color: #667eea;
+}
+
+.file-upload-label i {
+    font-size: 1.5rem;
+}
+
+/* 加载动画 */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1><i class="fas fa-receipt"></i> 商品信息卡片打印系统</h1>
+        <p>填写商品信息，生成精美的商品卡片用于打印或保存为图片</p>
+    </header>
+    
+    <div class="main-content">
+        <div class="form-section">
+            <h2 class="section-title">
+                <i class="fas fa-edit"></i> 商品信息填写
+            </h2>
+
+            <div class="form-group">
+                <label for="productName">
+                    <i class="fas fa-tag"></i> 商品名称
+                </label>
+                <input type="text" id="productName" placeholder="请输入商品名称">
+            </div>
+
+            <div class="form-group">
+                <label for="productType">
+                    <i class="fas fa-list"></i> 商品类型
+                </label>
+                <select id="productType">
+                    <option value="">-- 选择商品类型 --</option>
+                    <option value="electronics">电子产品</option>
+                    <option value="clothing">服装鞋帽</option>
+                    <option value="books">图书文具</option>
+                    <option value="home">家居用品</option>
+                    <option value="sports">运动户外</option>
+                    <option value="beauty">美妆个护</option>
+                    <option value="food">食品饮料</option>
+                    <option value="other">其他</option>
+                </select>
+                <div class="custom-input-container" id="productTypeCustomContainer">
+                    <input type="text" id="productTypeCustom" placeholder="请输入商品类型" class="custom-input">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <i class="fas fa-globe"></i> 商品来源
+                </label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="sourceOfficial" name="source" value="official" checked>
+                        <label for="sourceOfficial">行货</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="sourceParallel" name="source" value="parallel">
+                        <label for="sourceParallel">水货</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <i class="fas fa-certificate"></i> 商品状态
+                </label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="conditionNew" name="condition" value="new" checked>
+                        <label for="conditionNew">一手</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="conditionUsed" name="condition" value="used">
+                        <label for="conditionUsed">二手</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="platform">
+                    <i class="fas fa-store"></i> 购物平台
+                </label>
+                <select id="platform">
+                    <option value="">-- 选择购物平台 --</option>
+                    <option value="taobao">淘宝</option>
+                    <option value="jd">京东</option>
+                    <option value="pdd">拼多多</option>
+                    <option value="amazon">亚马逊</option>
+                    <option value="ebay">eBay</option>
+                    <option value="other">其他平台</option>
+                </select>
+                <div class="custom-input-container" id="platformCustomContainer">
+                    <input type="text" id="platformCustom" placeholder="请输入购物平台" class="custom-input">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cardId">
+                    <i class="fas fa-barcode"></i> 订单编号
+                </label>
+                <input type="text" id="cardId" placeholder="请输入订单编号">
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <i class="fas fa-file-upload"></i> 上传收据
+                </label>
+                <div class="file-upload-wrapper">
+                    <input type="file" id="receiptUpload" accept="image/*" class="file-upload-input">
+                    <div class="file-upload-label">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>点击或拖拽上传收据图片</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <i class="fas fa-cog"></i> 收据显示模式
+                </label>
+                <div class="receipt-mode-group">
+                    <div class="receipt-mode-option">
+                        <input type="radio" id="receiptModeIcon" name="receiptMode" value="icon" checked>
+                        <label for="receiptModeIcon">图标模式</label>
+                    </div>
+                    <div class="receipt-mode-option">
+                        <input type="radio" id="receiptModeThumbnail" name="receiptMode" value="thumbnail">
+                        <label for="receiptModeThumbnail">缩略图</label>
+                    </div>
+                    <div class="receipt-mode-option">
+                        <input type="radio" id="receiptModeFull" name="receiptMode" value="full">
+                        <label for="receiptModeFull">完整显示</label>
+                    </div>
+                    <div class="receipt-mode-option">
+                        <input type="radio" id="receiptModeSeparate" name="receiptMode" value="separate">
+                        <label for="receiptModeSeparate">独立区域</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="previewBtn" class="btn btn-primary">
+                    <i class="fas fa-eye"></i> 预览商品卡片
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 预览窗口 -->
+<div id="previewWindow">
+    <div id="previewContent">
+        <div class="closeBtn" id="closePreview">×</div>
+        <div class="preview-card" id="previewCard">
+            <div>
+                <h2 id="pCardName">商品名称</h2>
+                <div class="preview-card-type" id="pCardType">商品类型</div>
+            </div>
+            
+            <div class="preview-card-details">
+                <div class="detail-item">
+                    <i class="fas fa-globe" style="color: #667eea;"></i>
+                    <strong>来源：</strong>
+                    <span id="pCardSource"></span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-certificate" style="color: #667eea;"></i>
+                    <strong>状态：</strong>
+                    <span id="pCardCondition"></span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-store" style="color: #667eea;"></i>
+                    <strong>平台：</strong>
+                    <span id="pCardPlatform"></span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-barcode" style="color: #667eea;"></i>
+                    <strong>编号：</strong>
+                    <span id="pCardID"></span>
+                </div>
+                <div class="detail-item receipt-section" id="receiptContainer" style="display: none;">
+                    <i class="fas fa-receipt receipt-icon"></i>
+                    <span class="receipt-text">收据已上传</span>
+                    <img id="pCardReceipt" src="" alt="收据图片">
+                </div>
+            </div>
+        </div>
+        <div class="preview-controls">
+            <button id="savePreview" class="btn btn-primary">
+                <i class="fas fa-download"></i> 保存图片
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// 自定义输入框显示/隐藏
+const productTypeSelect = document.getElementById('productType');
+const productTypeCustomContainer = document.getElementById('productTypeCustomContainer');
+productTypeSelect.addEventListener('change', () => {
+    if (productTypeSelect.value === 'other') {
+        productTypeCustomContainer.classList.add('show');
+        document.getElementById('productTypeCustom').focus();
+    } else {
+        productTypeCustomContainer.classList.remove('show');
+    }
+});
+
+const platformSelect = document.getElementById('platform');
+const platformCustomContainer = document.getElementById('platformCustomContainer');
+platformSelect.addEventListener('change', () => {
+    if (platformSelect.value === 'other') {
+        platformCustomContainer.classList.add('show');
+        document.getElementById('platformCustom').focus();
+    } else {
+        platformCustomContainer.classList.remove('show');
+    }
+});
+
+// 预览功能
+const previewBtn = document.getElementById('previewBtn');
+const previewWindow = document.getElementById('previewWindow');
+const closePreview = document.getElementById('closePreview');
+const pCardName = document.getElementById('pCardName');
+const pCardType = document.getElementById('pCardType');
+const pCardSource = document.getElementById('pCardSource');
+const pCardCondition = document.getElementById('pCardCondition');
+const pCardPlatform = document.getElementById('pCardPlatform');
+const pCardID = document.getElementById('pCardID');
+const pCardReceipt = document.getElementById('pCardReceipt');
+const receiptContainer = document.getElementById('receiptContainer');
+
+// 文件上传处理
+const receiptUpload = document.getElementById('receiptUpload');
+let receiptData = '';
+
+receiptUpload.addEventListener('change', () => {
+    const file = receiptUpload.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            receiptData = e.target.result;
+            // 更新上传标签文字
+            const label = document.querySelector('.file-upload-label span');
+            label.textContent = `已选择: ${file.name}`;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        receiptData = '';
+        const label = document.querySelector('.file-upload-label span');
+        label.textContent = '点击或拖拽上传收据图片';
+    }
+});
+
+// 拖拽上传
+const fileUploadWrapper = document.querySelector('.file-upload-wrapper');
+const fileUploadLabel = document.querySelector('.file-upload-label');
+
+fileUploadWrapper.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    fileUploadLabel.style.borderColor = '#667eea';
+    fileUploadLabel.style.background = '#edf2f7';
+});
+
+fileUploadWrapper.addEventListener('dragleave', () => {
+    fileUploadLabel.style.borderColor = '#cbd5e0';
+    fileUploadLabel.style.background = '#f8fafc';
+});
+
+fileUploadWrapper.addEventListener('drop', (e) => {
+    e.preventDefault();
+    fileUploadLabel.style.borderColor = '#cbd5e0';
+    fileUploadLabel.style.background = '#f8fafc';
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        receiptUpload.files = files;
+        receiptUpload.dispatchEvent(new Event('change'));
+    }
+});
+
+// 预览按钮点击事件
+previewBtn.addEventListener('click', () => {
+    const name = document.getElementById('productName').value || '未命名商品';
+    let type = productTypeSelect.value;
+    if (type === 'other') {
+        type = document.getElementById('productTypeCustom').value || '其他';
+    } else if (type === 'electronics') {
+        type = '电子产品';
+    } else if (type === 'clothing') {
+        type = '服装鞋帽';
+    } else if (type === 'books') {
+        type = '图书文具';
+    } else if (type === 'home') {
+        type = '家居用品';
+    } else if (type === 'sports') {
+        type = '运动户外';
+    } else if (type === 'beauty') {
+        type = '美妆个护';
+    } else if (type === 'food') {
+        type = '食品饮料';
+    } else {
+        type = '未指定';
+    }
+    
+    const source = document.querySelector('input[name="source"]:checked')?.value === 'official' ? '行货' : '水货';
+    const condition = document.querySelector('input[name="condition"]:checked')?.value === 'new' ? '一手' : '二手';
+    
+    let platform = platformSelect.value;
+    if (platform === 'other') {
+        platform = document.getElementById('platformCustom').value || '其他平台';
+    } else if (platform === 'taobao') {
+        platform = '淘宝';
+    } else if (platform === 'jd') {
+        platform = '京东';
+    } else if (platform === 'pdd') {
+        platform = '拼多多';
+    } else if (platform === 'amazon') {
+        platform = '亚马逊';
+    } else if (platform === 'ebay') {
+        platform = 'eBay';
+    } else {
+        platform = '未指定';
+    }
+    
+    const id = document.getElementById('cardId').value || '未填写';
+    const receiptMode = document.querySelector('input[name="receiptMode"]:checked')?.value || 'icon';
+
+    pCardName.textContent = name;
+    pCardType.textContent = type;
+    pCardSource.textContent = source;
+    pCardCondition.textContent = condition;
+    pCardPlatform.textContent = platform;
+    pCardID.textContent = id;
+    
+    // 根据收据显示模式处理收据显示
+    if (receiptData) {
+        receiptContainer.style.display = 'block';
+        
+        // 清除之前的样式类
+        receiptContainer.className = 'detail-item receipt-section';
+        pCardReceipt.className = '';
+        
+        // 根据模式添加相应的样式和内容
+        switch (receiptMode) {
+            case 'icon':
+                receiptContainer.classList.add('icon-mode');
+                receiptContainer.innerHTML = `
+                    <i class="fas fa-receipt receipt-icon"></i>
+                    <span class="receipt-text">收据已上传</span>
+                `;
+                break;
+                
+            case 'thumbnail':
+                receiptContainer.classList.add('thumbnail-mode');
+                receiptContainer.innerHTML = `
+                    <i class="fas fa-receipt receipt-icon"></i>
+                    <span class="receipt-text">收据：</span>
+                    <img id="pCardReceipt" src="${receiptData}" alt="收据图片" class="thumbnail-mode">
+                `;
+                break;
+                
+            case 'full':
+                receiptContainer.classList.add('receipt-section');
+                receiptContainer.innerHTML = `
+                    <i class="fas fa-receipt receipt-icon"></i>
+                    <strong>收据：</strong>
+                    <img id="pCardReceipt" src="${receiptData}" alt="收据图片" class="full-mode">
+                `;
+                break;
+                
+            case 'separate':
+                receiptContainer.classList.add('separate-mode');
+                receiptContainer.innerHTML = `
+                    <div style="text-align: center; margin-bottom: 10px;">
+                        <i class="fas fa-receipt" style="color: #667eea; margin-right: 8px;"></i>
+                        <strong style="color: #4a5568;">购买收据</strong>
+                    </div>
+                    <img id="pCardReceipt" src="${receiptData}" alt="收据图片" class="separate-mode">
+                `;
+                break;
+        }
+        
+        // 显示图片
+        const img = receiptContainer.querySelector('img');
+        if (img) {
+            img.style.display = 'block';
+        }
+    } else {
+        receiptContainer.style.display = 'none';
+    }
+
+    previewWindow.style.display = 'flex';
+});
+
+// 关闭预览窗口
+closePreview.addEventListener('click', () => {
+    previewWindow.style.display = 'none';
+});
+
+// 点击背景关闭预览窗口
+previewWindow.addEventListener('click', (e) => {
+    if (e.target === previewWindow) {
+        previewWindow.style.display = 'none';
+    }
+});
+
+// 保存图片功能
+document.getElementById('savePreview').addEventListener('click', () => {
+    const saveBtn = document.getElementById('savePreview');
+    const originalText = saveBtn.innerHTML;
+    saveBtn.innerHTML = '<div class="loading"></div> 保存中...';
+    saveBtn.disabled = true;
+    
+    html2canvas(document.getElementById('previewCard'), {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        useCORS: true,
+        logging: false
+    }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = '商品卡片.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        
+        saveBtn.innerHTML = originalText;
+        saveBtn.disabled = false;
+    }).catch(error => {
+        console.error('保存图片时出错:', error);
+        alert('保存图片失败，请重试');
+        saveBtn.innerHTML = originalText;
+        saveBtn.disabled = false;
+    });
+});
+
+// 输入框实时验证
+document.getElementById('productName').addEventListener('input', function() {
+    if (this.value.trim()) {
+        this.style.borderColor = '#48bb78';
+    } else {
+        this.style.borderColor = '#e2e8f0';
+    }
+});
+</script>
+</body>
+</html>
+
